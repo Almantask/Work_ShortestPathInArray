@@ -5,11 +5,9 @@ Determine if you can reach the last element for array according these rules:
 (Example: if the value is 3 you can take 0, 1, 2 or 3 steps).
 
 Winnable example:
-
 1 2 0 3 0 2 0
 
 Not winnable example:
-
 1 2 0 1 0 2 0
 
 
