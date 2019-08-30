@@ -1,4 +1,5 @@
 # Work_ShortestPathInArray
+[![Build Status](https://travis-ci.com/Almantask/Work_ShortestPathInArray.svg?branch=master)](https://travis-ci.com/Almantask/Work_ShortestPathInArray)
 Determine if you can reach the last element for array according these rules:
 1. You start at first element.
 2. Current element value indicates how many steps you can take at most.
