@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Work_ShortestPathInArray.API.Exceptions;
+﻿using Work_ShortestPathInArray.API.Exceptions;
+using Work_ShortestPathInArray.API.Tests.Input;
 using Xunit;
 
 namespace Work_ShortestPathInArray.API.Tests
@@ -7,7 +7,7 @@ namespace Work_ShortestPathInArray.API.Tests
     public class ShortestPath
     {
         [Theory]
-        [InlineData(1, 2, 0, 1, 0, 2, 0)]
+        [MemberData(nameof(ArrayPaths.Unreachable), MemberType = typeof(ArrayPaths))]
         public void Path_NotFound_Throws(params int[] stepsAhead)
         {
             Assert.Throws<UnreachablePathException>(
@@ -15,12 +15,15 @@ namespace Work_ShortestPathInArray.API.Tests
         }
 
         [Theory]
-        [InlineData(new[] { 0, 1, 3 }, new [] {1, 2, 0, 3, 0, 2, 0})]
-        [InlineData(new[] { 0, 1, 2 }, new[] {1, 2, 4, 3, 2, 2, 0})]
+        [MemberData(nameof(ArrayPathOutcomes.OneShortest), MemberType = typeof(ArrayPathOutcomes))]
+        [MemberData(nameof(ArrayPathOutcomes.MultipleShortest), MemberType = typeof(ArrayPathOutcomes))]
+        [MemberData(nameof(ArrayPathOutcomes.TooSmall), MemberType = typeof(ArrayPathOutcomes))]
+        [MemberData(nameof(ArrayPathOutcomes.TooManySteps), MemberType = typeof(ArrayPathOutcomes))]
         public void Path_Found_Shortest(int[] expectedPath, int[] stepsAhead)
         {
             var shortestPath = ArrayPathFinder.FindShortestPath(stepsAhead);
             Assert.Equal(expectedPath, shortestPath);
         }
+
     }
 }

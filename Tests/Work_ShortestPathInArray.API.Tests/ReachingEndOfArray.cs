@@ -1,17 +1,26 @@
-﻿using Xunit;
+﻿using Work_ShortestPathInArray.API.Tests.Input;
+using Xunit;
 
 namespace Work_ShortestPathInArray.API.Tests
 {
     public class ReachingEnd
     {
         [Theory]
-        [InlineData(true, 1, 2, 0, 3, 0, 2, 0)]
-        [InlineData(false, 1, 2, 0, 1, 0, 2, 0)]
-        [InlineData(true, 0)]
-        public void Path_IsReachable(bool expectedOutcome, params int[] stepsAhead)
+        [MemberData(nameof(ArrayPaths.OneShortest), MemberType = typeof(ArrayPaths))]
+        [MemberData(nameof(ArrayPaths.MultipleShortest), MemberType = typeof(ArrayPaths))]
+        [MemberData(nameof(ArrayPaths.TooSmall), MemberType = typeof(ArrayPaths))]
+        public void Path_IsReachable_True(params int[] stepsAhead)
         {
             var isEndReached = ArrayPathFinder.IsEndReachable(stepsAhead);
-            Assert.Equal(expectedOutcome, isEndReached);
+            Assert.True(isEndReached);
+        }
+
+        [Theory]
+        [MemberData(nameof(ArrayPaths.Unreachable), MemberType = typeof(ArrayPaths))]
+        public void Path_IsReachable_False(params int[] stepsAhead)
+        {
+            var isEndReached = ArrayPathFinder.IsEndReachable(stepsAhead);
+            Assert.False(isEndReached);
         }
     }
 }
