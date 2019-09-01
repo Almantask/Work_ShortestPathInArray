@@ -7,6 +7,7 @@ namespace Work_ShortestPathInArray.API.Tests
         [Theory]
         [InlineData(true, 1, 2, 0, 3, 0, 2, 0)]
         [InlineData(false, 1, 2, 0, 1, 0, 2, 0)]
+        [InlineData(true, 0)]
         public void Path_IsReachable(bool expectedOutcome, params int[] stepsAhead)
         {
             var isEndReached = ArrayPathFinder.IsEndReachable(stepsAhead);

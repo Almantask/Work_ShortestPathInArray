@@ -25,6 +25,12 @@ namespace Work_ShortestPathInArray.Presentation.Controllers
             });
         }
 
+        [HttpPost("[action]")]
+        public void WeatherForecasts(string message)
+        {
+            
+        }
+
         public class WeatherForecast
         {
             public string DateFormatted { get; set; }
