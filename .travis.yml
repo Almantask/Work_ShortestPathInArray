@@ -2,7 +2,7 @@ language: csharp
 solution: "Sudoku.sln"
 dist: xenial
 mono: none
-dotnet: 2.1.502
+dotnet: 2.2
 
 install:
   - dotnet restore
