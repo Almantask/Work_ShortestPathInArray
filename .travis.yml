@@ -1,6 +1,6 @@
 language: csharp
 solution: "Sudoku.sln"
-dist: trusty
+dist: xenial
 mono: none
 dotnet: 2.1.502
 
