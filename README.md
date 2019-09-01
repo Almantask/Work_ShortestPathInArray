@@ -1,4 +1,5 @@
 # Work_ShortestPathInArray
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b036214c83c24a5daea9e89e2297d16f)](https://app.codacy.com/app/Almantask/Work_ShortestPathInArray?utm_source=github.com&utm_medium=referral&utm_content=Almantask/Work_ShortestPathInArray&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.com/Almantask/Work_ShortestPathInArray.svg?branch=master)](https://travis-ci.com/Almantask/Work_ShortestPathInArray)
 
 Determine if you can reach the last element for array according these rules:
