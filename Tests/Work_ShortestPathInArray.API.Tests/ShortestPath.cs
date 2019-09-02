@@ -1,5 +1,4 @@
-﻿using Work_ShortestPathInArray.API.Exceptions;
-using Work_ShortestPathInArray.API.Tests.Input;
+﻿using Work_ShortestPathInArray.API.Tests.Input;
 using Xunit;
 
 namespace Work_ShortestPathInArray.API.Tests
@@ -10,8 +9,8 @@ namespace Work_ShortestPathInArray.API.Tests
         [MemberData(nameof(ArrayPaths.Unreachable), MemberType = typeof(ArrayPaths))]
         public void Path_NotFound_Throws(params int[] stepsAhead)
         {
-            Assert.Throws<UnreachablePathException>(
-                () => ArrayPathFinder.FindShortestPath(stepsAhead));
+            var path = ArrayPathFinder.FindShortestPath(stepsAhead);
+            Assert.Null(path);
         }
 
         [Theory]

@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Work_ShortestPathInArray.API.Exceptions;
-using Work_ShortestPathInArray.API.Extensions;
 
 namespace Work_ShortestPathInArray.API
 {
@@ -9,8 +7,6 @@ namespace Work_ShortestPathInArray.API
     {
         private const int MinimumPathSize = 2;
 
-        // Should not be reused within pathfinding algorithm,
-        // because it would cause reiterating the array.
         public static bool IsEndReachable(params int[] stepsAhead)
         {
             bool isEndMatchingStart = stepsAhead.Length < MinimumPathSize;
@@ -34,40 +30,44 @@ namespace Work_ShortestPathInArray.API
             return false;
         }
 
-        public static IEnumerable<int> FindShortestPath(params int[] stepsAhead)
+        public static IEnumerable<int> FindShortestPath(params int[] array)
         {
-            bool isEndMatchingStart = stepsAhead.Length < MinimumPathSize;
-            if(isEndMatchingStart) return new List<int>();
+            var optimalPath = new List<int>();
+            var pathEnd = array.Length - 1;
+            var currentIndex = 0;
 
-            var path = FindShortestPath(0, stepsAhead, new List<int>());
-            if (path == null) throw new UnreachablePathException();
+            if (pathEnd <= currentIndex) return optimalPath;
 
-            return path;
-        }
-
-        private static IList<int> FindShortestPath(int startingIndex, int[] array, IList<int> path)
-        {
-            var isEndReached = startingIndex == array.Length - 1;
-            if (isEndReached) return path;
-
-            var stepsAhead = array[startingIndex];
-            if (stepsAhead == 0) return null;
-
-            var newPath = path.CloneWithAdded(startingIndex);
-            var foundPaths = new List<IList<int>>();
-            for (var option = 1; option <= stepsAhead; option++)
+            optimalPath.Add(currentIndex);
+            while(currentIndex < pathEnd)
             {
-                var willBeOutOfBounds = option + startingIndex >= array.Length;
-                if (willBeOutOfBounds) continue;
+                var currentStepsAhead = array[currentIndex];
+                if (currentStepsAhead == 0) return null;
 
-                var foundPath = FindShortestPath(startingIndex + option, array, newPath);
-                if (foundPath == null) continue;
+                var isEndReachable = currentIndex + currentStepsAhead >= pathEnd;
+                if (isEndReachable) return optimalPath;
 
-                foundPaths.Add(foundPath);
+                var nextOptimalIndex = currentIndex + 1;
+                var distanceFromPrevious = 0;
+                for (var forward = 1; forward <= currentStepsAhead; forward++)
+                {
+                    var nextOptimalSteps = array[nextOptimalIndex]; 
+                    var nextIndex = currentIndex + forward;
+                    var nextAhead = array[nextIndex];
+                    var isNextShortcut = nextAhead >= nextOptimalSteps 
+                                         && forward > distanceFromPrevious;
+                    if (!isNextShortcut) continue;
+
+                    nextOptimalIndex = nextIndex;
+                    distanceFromPrevious = forward;
+                }
+
+                optimalPath.Add(nextOptimalIndex);
+                currentIndex = nextOptimalIndex;
             }
-            var shortestPath = foundPaths.OrderBy(p => p.Count).FirstOrDefault();
 
-            return shortestPath;
+            return optimalPath;
         }
+
     }
 }
