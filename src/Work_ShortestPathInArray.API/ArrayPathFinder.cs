@@ -5,11 +5,10 @@ namespace Work_ShortestPathInArray.API
 {
     public static class ArrayPathFinder
     {
-        private const int MinimumPathSize = 2;
-
         public static bool IsEndReachable(params int[] stepsAhead)
         {
-            bool isEndMatchingStart = stepsAhead.Length < MinimumPathSize;
+            const int minimumPathLenght = 2;
+            bool isEndMatchingStart = stepsAhead.Length < minimumPathLenght;
             return isEndMatchingStart || IsEndReachable(0, stepsAhead);
         }
 
