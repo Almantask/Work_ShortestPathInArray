@@ -25,8 +25,10 @@ namespace Work_ShortestPathInArray.API
                 if (isEndReachable) return optimalPath;
 
                 var nextOptimalIndex = currentIndex + 1;
-                var distanceFromPrevious = 0;
-                for (var forward = 1; forward <= currentStepsAhead; forward++)
+                var distanceFromPrevious = 1;
+                // Forward is 2, because we presume that the next element will be shortcut.
+                // Since next element is 1 ahead, we need to compare it starting with the one after it- 2.
+                for (var forward = 2; forward <= currentStepsAhead; forward++)
                 {
                     var nextOptimalSteps = array[nextOptimalIndex]; 
                     var nextIndex = currentIndex + forward;
