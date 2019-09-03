@@ -2,7 +2,7 @@
 import { Route } from 'react-router';
 import Layout from './components/Layout';
 import Home from './components/Home';
-import Counter from './components/Counter';
+import Counter from './components/ArrayPathConfigurator';
 import FetchData from './components/FetchData';
 
 export default () => (
