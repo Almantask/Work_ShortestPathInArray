@@ -5,29 +5,7 @@ namespace Work_ShortestPathInArray.API
 {
     public static class ArrayPathFinder
     {
-        public static bool IsEndReachable(params int[] stepsAhead)
-        {
-            const int minimumPathLenght = 2;
-            bool isEndMatchingStart = stepsAhead.Length < minimumPathLenght;
-            return isEndMatchingStart || IsEndReachable(0, stepsAhead);
-        }
-
-        private static bool IsEndReachable(int startingIndex, params int[] array)
-        {
-            var stepsAhead = array[startingIndex];
-            if (stepsAhead == 0) return false;
-
-            var willReachEnd = stepsAhead >= array.Length - 1 - startingIndex;
-            if (willReachEnd) return true;
-
-            for (var option = 1; option <= stepsAhead; option++)
-            {
-                var isEndReached = IsEndReachable(startingIndex + option, array);
-                if (isEndReached) return true;
-            }
-
-            return false;
-        }
+        public static bool IsEndReachable(params int[] array) => FindShortestPath(array) != null;
 
         public static IEnumerable<int> FindShortestPath(params int[] array)
         {
