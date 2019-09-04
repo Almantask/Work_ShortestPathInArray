@@ -1,102 +1,129 @@
-import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { actionCreators } from '../store/ArrayPathConfigurator';
+import React, { Component } from 'react';
 
-const ArrayPath = () => {
+export class ArrayPathConfigurator extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            arrayPath: [],
+            isEndPossible: null,
+            shortestPath: null,
+            isReachabilityRequest: false,
+            isShortestPathRequest: false
+        }
+    }
 
-    const BindLogicToPhysicalSteps = (stepIndex, step) => {
-        const array = arrayPath.slice();
+    bindLogicToPhysicalSteps = (stepIndex, step) => {
+        const array = this.state.arrayPath.slice();
 
-        if (step == null || step == "") {
+        if (step === null || step === "") {
             array.splice(stepIndex, 1);
         }
         else {
             array[stepIndex] = step;
         }
 
-        setArrayPath(array);
+        this.setState({ arrayPath: array });
     }
 
-    const addStep = () => {
-        const array = arrayPath.slice();
+    addStep = () => {
+        const array = this.state.arrayPath.slice();
         const defaultStepValue = 0;
         array.push(defaultStepValue);
-        setArrayPath(array);
-
-        setIsReachabilityRequest(false);
-        setIsShortestPathRequest(false);
+        this.setState({ arrayPath: array });
+        this.setState({ isReachabilityRequest: false });
+        this.setState({ isShortestPathRequest: false });
     }
 
-    const assignEndStatus = () => {
-        setiSEndPossible(true);
-        setIsReachabilityRequest(true);
-        setIsShortestPathRequest(false);
+    assignEndStatus = () => {
+        this.setState({ issEndPossible: true }); // to be determined
+        this.setState({ isReachabilityRequest: true });
+        this.setState({ isShortestPathRequest: false });
     }
 
-    const assignShortestPath = () => {
-        setShortestPath([0, 1, 2, 3]);
-        setIsShortestPathRequest(true);
-        setIsReachabilityRequest(false);
+    assignShortestPath = () => {
+        this.setState({ shortestPath: [0, 1, 2, 3] });
+        this.setState({ isReachabilityRequest: false });
+        this.setState({ isShortestPathRequest: true });
     }
 
-    const [arrayPath, setArrayPath] = useState([]);
-    const [isEndPossible, setiSEndPossible] = useState(null);
-    const [shortestPath, setShortestPath] = useState(null);
-
-    const [isReachabilityRequest, setIsReachabilityRequest] = useState(false);
-    const [isShortestPathRequest, setIsShortestPathRequest] = useState(false);
-
-    return (
-        <div>
-            {arrayPath.map((step, stepIndex) =>
-                <InputStep
-                    index={stepIndex}
-                    onInputStepChange={BindLogicToPhysicalSteps}
-                    stepValue={step}
-                />
-            )}
-            <button
-                onClick={addStep}>
-                Add Step
-                </button>
-            <br />
-            <button
-                onClick={assignEndStatus}>
-                Is End Reachable
-                </button>
-            <button
-                onClick={assignShortestPath}>
-                Find Shortest Path
-                </button>
-            <br />
-            {isReachabilityRequest &&
-                <IsEndReachableStatusLabel IsReachable={isEndPossible} />}
-            {isShortestPathRequest &&
-                <OptimalPathLabel OptimalPath={shortestPath} />}
-        </div>
-    );
+    render() {
+        return (
+            <div>
+                {this.state.arrayPath.map((step, stepIndex) =>
+                    <InputStep
+                        index={stepIndex}
+                        onInputStepChange={this.bindLogicToPhysicalSteps}
+                        stepValue={step}
+                    />
+                )}
+                <button
+                    onClick={this.addStep}>
+                    Add Step
+    </button>
+                <br />
+                <button
+                    onClick={this.assignEndStatus}>
+                    Is End Reachable
+    </button>
+                <button
+                    onClick={this.assignShortestPath}>
+                    Find Shortest Path
+    </button>
+                <br />
+                {this.state.isReachabilityRequest &&
+                    <IsEndReachableStatusLabel isReachable={this.state.isEndPossible} />}
+                {this.state.isShortestPathRequest &&
+                    <OptimalPathLabel optimalPath={this.state.shortestPath} />}
+            </div>
+        );
+    }
 }
 
-const InputStep = (props) => {
-    const handleInputChange = (event) => props.onInputStepChange(props.index, event.target.value);
+export class IsEndReachableStatusLabel extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isReachable: props.isReachable
+        }
+    }
 
-    return (
-        <input onInput={handleInputChange.bind(this)} defaultValue={props.stepValue} >
-        </input>
-    )
+    render() {
+        const text = this.state.isReachable ? "End is reachable." : "End cannot be reached.";
+        return <div>{text}</div>
+    }
 }
 
-const IsEndReachableStatusLabel = (props) => {
-    const text = props.IsReachable ? "End is reachable." : "End cannot be reached.";
-    return <div>{text}</div>
+export class OptimalPathLabel extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            optimalPath: props.optimalPath
+        }
+    }
+
+    render() {
+        return <div>Optimal Path: {this.state.optimalPath}.</div>;
+    }
 }
 
-const OptimalPathLabel = (props) => {
-    return <div>Optimal Path: {props.OptimalPath}.</div>
-}
+export class InputStep extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            onInputStepChange: props.onInputStepChange,
+            index: props.index,
+            stepValue: props.stepValue
+        }
+    }
 
-export default connect(
-    state => state.counter,
-    dispatch => bindActionCreators(actionCreators, dispatch)
-)(ArrayPath);
+    handleInputChange = (event) => this.state.onInputStepChange(this.state.index, event.target.value);
+
+    render() {
+        return <
+            input
+            onInput={
+                this.handleInputChange.bind(this)
+            }
+            defaultValue={this.state.stepValue} />
+    }
+}
