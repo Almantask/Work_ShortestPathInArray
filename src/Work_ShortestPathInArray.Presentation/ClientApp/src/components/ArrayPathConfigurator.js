@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import * as arrayPathConfiguratorClient from "../ArrayPathClient.js";
 
 export class ArrayPathConfigurator extends React.Component {
     constructor(props) {
@@ -35,13 +36,13 @@ export class ArrayPathConfigurator extends React.Component {
     }
 
     assignEndStatus = () => {
-        this.setState({ issEndPossible: true }); // to be determined
+        this.setState({ issEndPossible: arrayPathConfiguratorClient.isArrayEndReachable(this.state.arrayPath) }); // to be determined
         this.setState({ isReachabilityRequest: true });
         this.setState({ isShortestPathRequest: false });
     }
 
     assignShortestPath = () => {
-        this.setState({ shortestPath: [0, 1, 2, 3] });
+        this.setState({ shortestPath: arrayPathConfiguratorClient.findShortestPath(this.state.arrayPath)});
         this.setState({ isReachabilityRequest: false });
         this.setState({ isShortestPathRequest: true });
     }
